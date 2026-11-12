@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>LeetCode 練習日誌</title>
+  <meta name="description" content="記錄 LeetCode 練習、安排複習並查看累計統計。">
+  <link rel="stylesheet" href="./style.css">
+  <script defer src="./app.js"></script>
+</head>
+<body>
+<header><div class="shell top">
+  <a href="#top" class="brand"><span aria-hidden="true">&lt;/&gt;</span> LeetCode 練習日誌</a>
+  <nav aria-label="區段"><a href="#calendar">日曆</a><a href="#problems">題目清單</a><a href="#data">資料管理</a></nav>
+  <button class="primary" id="add-practice" type="button">＋ 記一筆</button>
+</div></header>
+<main class="shell" id="top">
+  <div class="intro"><div><h1>刷題總覽</h1><p id="today"></p></div><button id="demo" type="button">載入示範資料</button></div>
+  <section class="panel activity" aria-labelledby="activity-title">
+    <div class="section-head"><div><h2 id="activity-title">每日練習</h2><p>最近 30 天 · 練習次數</p></div><div class="legend"><span><i class="dot first"></i>首刷</span><span><i class="dot repeat"></i>重刷</span></div></div>
+    <div id="chart" class="chart"></div><p class="chart-caption" id="chart-caption" aria-live="polite"></p>
+  </section>
+  <div class="section-head totals"><h2>累計刷題統計</h2><p>所有刷過的不同題目</p></div>
+  <div class="stats">
+    <section class="panel"><h3>難度分布</h3><div class="difficulty"><div id="donut" class="donut" aria-hidden="true"></div><ul id="levels" class="levels"></ul></div></section>
+    <section class="panel"><div class="section-head"><h3>題型分布</h3><p id="topic-count"></p></div><ul id="topics" class="topics"></ul></section>
+  </div>
+  <section class="panel calendar" id="calendar">
+    <div class="section-head"><h2>刷題日曆</h2><div class="month-nav"><button id="prev" aria-label="上個月" type="button">‹</button><strong id="month"></strong><button id="next" aria-label="下個月" type="button">›</button></div></div>
+    <div class="calendar-layout"><div><div id="month-grid" class="month-grid" aria-label="選擇日期"></div><div class="legend"><span><i class="dot repeat"></i>已刷</span><span><i class="dot planned"></i>計畫</span></div></div>
+    <div class="agenda"><div class="section-head"><h3 id="selected-day"></h3><button id="tomorrow" type="button">跳到明天</button></div><div id="agenda" aria-live="polite"></div><button id="add-plan" type="button">＋ 加入當天計畫</button></div></div>
+  </section>
+  <section class="panel" id="problems">
+    <div class="section-head"><h2>題目清單</h2><label class="search">搜尋題目 <input id="search" placeholder="題號、題名或題型"></label></div>
+    <div class="problem-layout">
+      <div>
+        <div id="problem-list"></div>
+        <div class="problem-pagination" id="problem-pagination" role="group" aria-label="題目清單分頁" hidden>
+          <button id="problem-prev" type="button" aria-controls="problem-list">上一頁</button>
+          <span id="problem-page-label" role="status"></span>
+          <button id="problem-next" type="button" aria-controls="problem-list">下一頁</button>
+        </div>
+      </div>
+      <div id="history" aria-live="polite"></div>
+    </div>
+  </section>
+  <section class="panel" id="data">
+    <div class="section-head"><h2>資料管理</h2></div>
+    <p>紀錄存在這個瀏覽器。換裝置時，可下載 JSON 備份再匯入。</p>
+    <div class="data-actions"><button id="import-csv" type="button">匯入 Notion CSV</button><button id="backup" type="button">下載 JSON 備份</button><button id="restore" type="button">還原 JSON 備份</button></div>
+    <p>CSV 的日期欄當作首刷日期。評論內的重刷日期可在題目歷史補記。</p>
+    <input id="csv-file" type="file" accept=".csv,text/csv" hidden><input id="json-file" type="file" accept=".json,application/json" hidden>
+    <button id="clear-demo" type="button" hidden>清除示範資料</button><p id="status" role="status"></p>
+  </section>
+</main>
+<dialog id="editor"><form id="editor-form">
+  <div class="section-head"><h2 id="editor-title"></h2><button type="button" id="close-editor" aria-label="關閉">×</button></div>
+  <label>選擇題目<select id="existing" name="existing"></select></label>
+  <div id="new-fields"><div class="fields"><label>LeetCode 題號<input name="id" type="number" min="1" max="999999" inputmode="numeric"></label><label>難度<select name="level"><option>Easy</option><option selected>Medium</option><option>Hard</option></select></label></div>
+  <label>題目名稱<input name="title" maxlength="160"></label><label>題型（用逗號分隔）<input name="tags" placeholder="Array, Binary Search" maxlength="300"></label></div>
+  <label>日期<input type="date" name="date" required></label>
+  <label id="note-field">練習備註<textarea name="note" rows="2" maxlength="2000"></textarea></label>
+  <label id="unknown-field" class="checkbox"><input type="checkbox" name="backfill"> 補上既有練習的日期</label>
+  <p id="editor-error" role="alert"></p><button class="primary" type="submit">儲存</button>
+</form></dialog>
+</body></html>
